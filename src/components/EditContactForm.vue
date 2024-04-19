@@ -1,5 +1,5 @@
 <template>
-    <div v-if="contact">
+    <div v-if="editedContact">
       <h2>Edit Contact</h2>
       <form @submit.prevent="submitForm">
         <label for="firstName">First Name:</label>
@@ -27,10 +27,18 @@
       };
     },
     methods: {
-      loadContact() {
+        loadContact() {
         const contacts = getContacts();
-        this.editedContact = contacts.find(contact => contact.id === this.$route.params.id);
-      },
+        console.log('Contacts:', contacts);
+        const contactId = this.$route.params.id;
+        console.log('Contact ID:', contactId);
+        if (contactId) {
+            this.editedContact = contacts.find(contact => contact.id === contactId) || null;
+        } else {
+            console.error('Contact ID is undefined');
+        }
+        console.log('Edited Contact:', this.editedContact);
+        },
       submitForm() {
         if (!this.editedContact) return; // Handle case where contact is not found
         const contacts = getContacts();
